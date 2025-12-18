@@ -5,6 +5,9 @@ const dots = document.querySelectorAll('.dot');
 let currentIndex = 0;
 const total = 3;
 
+// Массив эффектов (можно менять)
+const effects = ['transition-glitch', 'transition-distortion', 'transition-scanlines'];
+
 function updateDots() {
   dots.forEach((dot, i) => {
     dot.classList.toggle('active', i === currentIndex);
@@ -14,21 +17,23 @@ function updateDots() {
 function goTo(index) {
   currentIndex = (index + total) % total;
 
-  // Убираем предыдущие классы эффектов
-  carousel.classList.remove('transition-glitch');
+  const isMobile = window.innerWidth <= 768;
+  const duration = isMobile ? 0.6 : 1.2;
 
-  // Рандомный эффект
-  const effects = ['transition-glitch'];
-  const randomEffect = effects[Math.floor(Math.random() * effects.length)];
-  carousel.classList.add(randomEffect);
+  // Убираем предыдущие эффекты
+  effects.forEach(effect => carousel.classList.remove(effect));
 
   gsap.to(carousel, {
     x: -currentIndex * window.innerWidth,
-    duration: 1.2,
+    duration: duration,
     ease: "power2.inOut",
     onComplete: () => {
-      // Убираем класс после завершения, чтобы не накапливалось
-      carousel.classList.remove(randomEffect);
+      // Эффекты только на десктопе
+      if (!isMobile && effects.length > 0) {
+        const randomEffect = effects[Math.floor(Math.random() * effects.length)];
+        carousel.classList.add(randomEffect);
+        setTimeout(() => carousel.classList.remove(randomEffect), duration * 1000);
+      }
     }
   });
 
@@ -43,7 +48,7 @@ document.querySelectorAll('.right-arrow').forEach(el => {
   el.addEventListener('click', () => goTo(currentIndex + 1));
 });
 
-// Свайп / колесо мыши / тач
+// Свайп / колесо / тач
 Observer.create({
   target: carousel,
   type: "wheel,touch,pointer",
@@ -54,7 +59,7 @@ Observer.create({
   onRight: () => goTo(currentIndex - 1)
 });
 
-// Открытие вертикальной страницы
+// Открытие контента
 document.querySelectorAll('.enter-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     const page = document.getElementById(btn.dataset.target);
@@ -70,7 +75,7 @@ document.querySelectorAll('.enter-btn').forEach(btn => {
   });
 });
 
-// Закрытие и возврат в карусель
+// Закрытие
 document.querySelectorAll('.close-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     const page = btn.parentElement;
@@ -81,38 +86,40 @@ document.querySelectorAll('.close-btn').forEach(btn => {
   });
 });
 
-// Инициализация индикаторов
+// Инициализация
 updateDots();
 
-// Частицы — магический дым/искры
-particlesJS('carousel', {
-  particles: {
-    number: { value: 40 },
-    color: { value: '#ff0000' },
-    shape: { type: 'circle' },
-    opacity: { value: 0.4, random: true },
-    size: { value: 4, random: true },
-    line_linked: { enable: false },
-    move: {
-      enable: true,
-      speed: 1,
-      direction: 'none',
-      random: true,
-      straight: false,
-      out_mode: 'out'
-    }
-  },
-  interactivity: {
-    detect_on: 'canvas',
-    events: {
-      onhover: { enable: true, mode: 'repulse' },
-      onclick: { enable: false }
-    }
-  },
-  retina_detect: true
-});
+// Частицы — только на десктопе
+if (window.innerWidth > 768) {
+  particlesJS('carousel', {
+    particles: {
+      number: { value: 130 },
+      color: { value: '#ff0000' },
+      shape: { type: 'circle' },
+      opacity: { value: 0.3, random: true },
+      size: { value: 3, random: true },
+      line_linked: { enable: false },
+      move: {
+        enable: true,
+        speed: 1,
+        direction: 'none',
+        random: true,
+        straight: false,
+        out_mode: 'out'
+      }
+    },
+    interactivity: {
+      detect_on: 'canvas',
+      events: {
+        onhover: { enable: true, mode: 'repulse' },
+        onclick: { enable: false }
+      }
+    },
+    retina_detect: true
+  });
+}
 
-// Лайтбокс для галереи
+// Лайтбокс
 const lightbox = document.getElementById('lightbox');
 const lightboxInner = document.getElementById('lightbox-inner');
 const lightboxClose = document.getElementById('lightbox-close');
@@ -123,7 +130,6 @@ document.querySelectorAll('.gallery-item').forEach(item => {
       const src = item.querySelector('iframe').src;
       lightboxInner.innerHTML = `<iframe src="${src}" frameborder="0" allowfullscreen></iframe>`;
     } else {
-      // Для заглушек фото (потом заменишь на реальные img)
       lightboxInner.innerHTML = '<div class="placeholder" style="font-size:3rem; padding:50px;">[Твоё фото здесь]</div>';
     }
     lightbox.style.display = 'flex';

@@ -44,18 +44,15 @@ body {
   pointer-events:none;
 }
 
-/* Фоны для вертикальных страниц */
-/* Страница 1 — Главная: глубокий чёрно-красный градиент с загадкой */
+/* Градиентные фоны для вертикальных страниц */
 #page1 {
   background: linear-gradient(135deg, #000000 0%, #1a0000 50%, #330000 100%);
 }
 
-/* Страница 2 — Шоу: энергичный красно-фиолетовый с магией */
 #page2 {
   background: linear-gradient(135deg, #000000 0%, #2d001a 40%, #4b0082 100%);
 }
 
-/* Страница 3 — О фокуснике: элегантный тёмно-синий с глубиной */
 #page3 {
   background: linear-gradient(135deg, #000000 0%, #001133 50%, #002b55 100%);
 }
@@ -106,26 +103,40 @@ body {
 }
 
 .dots {
-  position:absolute; 
-  bottom:40px; 
-  left:50%; 
-  transform:translateX(-50%);
-  display:flex; 
-  gap:15px; 
-  z-index:10;
+  position: fixed; /* Фиксировано на экране — не пропадают при скролле */
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 18px;
+  padding: 10px;
+  border-radius: 50%; /* Идеально круглая */
+  border: 1px solid rgba(255,0,0,0.6); /* Тонкая обводка */
+  backdrop-filter: blur(10px);
+  z-index: 10;
 }
 
 .dot {
-  width:12px; 
-  height:12px; 
-  background:rgba(255,255,255,0.4);
-  border-radius:50%; 
-  transition:0.4s;
+  width: 12px;
+  height: 12px;
+  background: rgba(255,255,255,0.3);
+  border: 1px solid rgba(255,0,0,0.4);
+  border-radius: 50%;
+  transition: all 0.4s ease;
 }
 
-.dot.active { 
-  background:#ff0000; 
-  transform:scale(1.5); 
+.dot.active {
+  background: #ff0000;
+  border: 1px solid #fff;
+  box-shadow: 0 0 15px #ff0000;
+  transform: scale(1.6);
+  animation: pulseDot 1.8s infinite;
+}
+
+@keyframes pulseDot {
+  0% { box-shadow: 0 0 15px #ff0000; }
+  50% { box-shadow: 0 0 25px #ff0000; }
+  100% { box-shadow: 0 0 15px #ff0000; }
 }
 
 .vertical-page {
@@ -141,9 +152,30 @@ body {
   align-items:center; 
   text-align:center; 
   z-index:20;
+  position:relative;
+  background-size:cover;
+  background-position:center;
+  background-repeat:no-repeat;
+}
 
-  /* Вариант 1: тёмный полупрозрачный градиент-оверлей */
+/* Фон страницы (наследуется) */
+.vertical-page::before {
+  content:'';
+  position:absolute;
+  inset:0;
+  background:inherit;
+  background-size:cover;
+  background-position:center;
+  z-index:-2;
+}
+
+/* Тёмный градиент-оверлей */
+.vertical-page::after {
+  content:'';
+  position:absolute;
+  inset:0;
   background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.6));
+  z-index:-1;
 }
 
 .close-btn {
@@ -199,7 +231,7 @@ p { font-size:1.4rem; max-width:900px; line-height:1.8; margin:30px 0; }
   align-items:center; 
   justify-content:center;
   font-size:1.6rem; 
-  color:#665; 
+  color:#666; 
   text-transform:uppercase;
 }
 
@@ -241,71 +273,55 @@ p { font-size:1.4rem; max-width:900px; line-height:1.8; margin:30px 0; }
   color:#ff0000; 
   cursor:pointer;
 }
-/* Эффекты при переходе */
-#carousel.transition-glitch {
-  animation: glitch 1s ease-in-out;
-}
 
-#carousel.transition-distortion {
-  animation: distortion 1.2s ease-in-out;
+/* МОБИЛЬНАЯ АДАПТАЦИЯ */
+@media (max-width: 768px) {
+  .dots {
+    gap: 10px;
+    padding: 8px;
+    bottom: 20px;
+    border-radius: 30px;
+  }
+  
+  .dot {
+    width: 10px;
+    height: 10px;
+  }
+  
+  .dot.active {
+    transform: scale(1.4);
+  }
+  
+  .nav-arrow {
+    font-size: 3rem;
+    left: 20px;
+    right: 20px;
+  }
+  
+  .enter-btn {
+    font-size: 2rem;
+    padding: 15px 30px;
+  }
+  
+  h1 { font-size: 2.5rem; }
+  p { font-size: 1.1rem; }
+  
+  .gallery {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .vertical-page {
+    padding: 80px 20px 60px;
+  }
 }
-
-#carousel.transition-scanlines {
-  animation: scanlines 1s ease-in-out;
-}
-
-@keyframes glitch {
-  0% { filter: hue-rotate(0deg) contrast(1); clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
-  10% { filter: hue-rotate(90deg) contrast(2); clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
-  20% { filter: hue-rotate(180deg) contrast(1.5); clip-path: polygon(0 2%, 100% 5%, 100% 98%, 0 95%); }
-  30% { filter: hue-rotate(270deg); clip-path: polygon(0 0, 100% 3%, 100% 97%, 0 100%); }
-  100% { filter: hue-rotate(0deg) contrast(1); clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
-}
-
-@keyframes distortion {
-  0% { filter: blur(0) brightness(1); transform: scale(1); }
-  50% { filter: blur(4px) brightness(1.2); transform: scale(1.02) skew(2deg); }
-  100% { filter: blur(0) brightness(1); transform: scale(1); }
-}
-
-@keyframes scanlines {
-  0% { opacity: 1; box-shadow: inset 0 0 50px rgba(255,0,0,0.3); }
-  50% { opacity: 0.95; box-shadow: inset 0 0 100px rgba(255,0,0,0.5); }
-  100% { opacity: 1; box-shadow: inset 0 0 0 rgba(255,0,0,0); }
-}
-.dots {
-  display: flex;
-  gap: 18px;
-  padding: 10px;
-  border-radius: 90%; /* идеально круглая рамочка */
-  border: 1px solid rgba(255,0,0,0.6); /* тонкая красная обводка */
-  backdrop-filter: blur(10px); /* лёгкий блюр для глубины */
-  z-index: 10;
-  position: absolute;
-  bottom: 40px;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-.dot {
-  width: 12px;
-  height: 12px;
-  background: rgba(255,255,255,0.3); /* полупрозрачный внутри */
-  border: 1px solid rgba(255,0,0,0.4);
-  border-radius: 50%;
-  transition: all 0.4s ease;
-}
-
-.dot.active {
-  background: #ff0000;
-  border: 1px solid #fff;
-  box-shadow: 0 0 15px #ff0000;
-  transform: scale(1.6);
-  animation: pulseDot 1.8s infinite;
-}
-
-@keyframes pulseDot {
-  0% { box-shadow: 0 0 15px #ff0000; }
-  50% { box-shadow: 0 0 25px #ff0000; }
-  100% { box-shadow: 0 0 15px #ff0000; }
+/* Делаем canvas particles.js видимым и поверх всего в карусели */
+#carousel canvas {
+  position: absolute !important;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 5; /* выше фона и шума, но ниже кнопок/стрелок */
 }
