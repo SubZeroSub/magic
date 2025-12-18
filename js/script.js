@@ -1,146 +1,109 @@
 gsap.registerPlugin(Observer);
 
+/* ===== VIEWPORT FIX ===== */
+function setVH() {
+  document.documentElement.style.setProperty(
+    '--vh',
+    `${window.innerHeight * 0.01}px`
+  );
+}
+setVH();
+window.addEventListener('resize', setVH);
+window.addEventListener('orientationchange', setVH);
+
+/* ===== CAROUSEL ===== */
 const carousel = document.getElementById('carousel');
-let currentIndex = 0;
-const total = 3;
+const sections = gsap.utils.toArray('.section');
+let index = 0;
+let locked = false;
+let observer;
 
-// Только глитч везде (на мобилке и десктопе)
-const effects = ['transition-glitch'];
-
-function goTo(index) {
-  currentIndex = (index + total) % total;
-
-  const duration = 1.2;
-
-  // Убираем старые эффекты
-  effects.forEach(effect => carousel.classList.remove(effect));
-
-  // Добавляем глитч
-  const randomEffect = effects[Math.floor(Math.random() * effects.length)];
-  carousel.classList.add(randomEffect);
-
+/* ===== NAV ===== */
+function goTo(i) {
+  if (locked) return;
+  index = (i + sections.length) % sections.length;
   gsap.to(carousel, {
-    x: -currentIndex * 100 + 'vw',
-    duration: duration,
-    ease: "power3.inOut",
-    onComplete: () => {
-      carousel.classList.remove(randomEffect);
-    }
+    x: -index * window.innerWidth,
+    duration: 0.8,
+    ease: 'power3.inOut'
   });
 }
 
-// Навигация стрелками
-document.querySelectorAll('.left-arrow').forEach(el => {
-  el.addEventListener('click', () => goTo(currentIndex - 1));
-});
-document.querySelectorAll('.right-arrow').forEach(el => {
-  el.addEventListener('click', () => goTo(currentIndex + 1));
-});
+/* ===== OBSERVER ===== */
+function enableObserver() {
+  observer = Observer.create({
+    target: window,
+    type: window.innerWidth < 768 ? "touch" : "wheel,touch",
+    preventDefault: true,
+    tolerance: 10,
+    onDown: () => goTo(index + 1),
+    onUp: () => goTo(index - 1)
+  });
+}
+enableObserver();
 
-// Свайп / колесо / тач
-Observer.create({
-  target: carousel,
-  type: "wheel,touch,pointer",
-  wheelSpeed: -1,
-  tolerance: 50,
-  preventDefault: true,
-  onLeft: () => goTo(currentIndex + 1),
-  onRight: () => goTo(currentIndex - 1)
-});
-
-// Открытие контента
+/* ===== ENTER PAGE ===== */
 document.querySelectorAll('.enter-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     const page = document.getElementById(btn.dataset.target);
+    locked = true;
+    observer.disable();
+
+    /* УБИРАЕМ КАРУСЕЛЬ */
     gsap.to(carousel, {
-      opacity: 0,
-      duration: 0.6,
-      onComplete: () => {
-        carousel.style.display = 'none';
-        page.style.display = 'flex';
-        document.body.style.overflowY = 'auto';
-      }
+      autoAlpha: 0,
+      scale: 0.95,
+      duration: 0.5,
+      ease: 'power2.out'
     });
+
+    page.style.display = 'block';
+    document.body.style.overflow = 'hidden';
+
+    gsap.fromTo(page,
+      { y: '100%' },
+      {
+        y: '0%',
+        duration: 0.7,
+        ease: 'power3.out'
+      }
+    );
   });
 });
 
-// Закрытие — стабильный возврат без чёрного и миниатюр
+/* ===== CLOSE PAGE ===== */
 document.querySelectorAll('.close-btn').forEach(btn => {
   btn.addEventListener('click', () => {
-    const page = btn.parentElement;
-    page.style.display = 'none';
-    document.body.style.overflowY = 'hidden';
+    const page = btn.closest('.vertical-page');
 
-    carousel.style.display = 'flex';
-    carousel.style.opacity = '0';
+    gsap.to(page, {
+      y: '100%',
+      duration: 0.5,
+      ease: 'power3.in',
+      onComplete() {
+        page.style.display = 'none';
+        page.style.transform = '';
+        document.body.style.overflow = '';
 
-    // Принудительная установка позиции
-    gsap.set(carousel, { x: -currentIndex * 100 + 'vw' });
+        /* ВОЗВРАЩАЕМ КАРУСЕЛЬ */
+        gsap.to(carousel, {
+          autoAlpha: 1,
+          scale: 1,
+          duration: 0.4,
+          ease: 'power2.out'
+        });
 
-    gsap.to(carousel, {
-      opacity: 1,
-      duration: 0.6,
-      ease: "power2.out"
+        locked = false;
+        enableObserver();
+      }
     });
   });
 });
 
-// Частицы — только на десктопе
-if (window.innerWidth > 768) {
-  particlesJS('carousel', {
-    particles: {
-      number: { value: 30 },
-      color: { value: '#ff3333' },
-      shape: { type: 'circle' },
-      opacity: { value: 0.6, random: true },
-      size: { value: 4, random: true },
-      line_linked: { enable: false },
-      move: {
-        enable: true,
-        speed: 1.5,
-        direction: 'none',
-        random: true,
-        straight: false,
-        out_mode: 'out'
-      }
-    },
-    interactivity: {
-      detect_on: 'canvas',
-      events: {
-        onhover: { enable: true, mode: 'repulse' },
-        onclick: { enable: true, mode: 'push' }
-      }
-    },
-    retina_detect: true
-  });
-}
-
-// Лайтбокс
-const lightbox = document.getElementById('lightbox');
-const lightboxInner = document.getElementById('lightbox-inner');
-const lightboxClose = document.getElementById('lightbox-close');
-
-document.querySelectorAll('.gallery-item').forEach(item => {
-  item.addEventListener('click', () => {
-    if (item.querySelector('iframe')) {
-      const src = item.querySelector('iframe').src;
-      lightboxInner.innerHTML = `<iframe src="${src}" frameborder="0" allowfullscreen></iframe>`;
-    } else {
-      lightboxInner.innerHTML = '<div class="placeholder" style="font-size:3rem; padding:50px;">[Твоё фото здесь]</div>';
-    }
-    lightbox.style.display = 'flex';
-    gsap.fromTo(lightboxInner, { scale: 0.8, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.5 });
-  });
-});
-
-lightboxClose.addEventListener('click', () => {
-  gsap.to(lightboxInner, {
-    scale: 0.8,
-    opacity: 0,
-    duration: 0.3,
-    onComplete: () => {
-      lightbox.style.display = 'none';
-      lightboxInner.innerHTML = '';
-    }
-  });
-});
+/* ===== ARROWS ===== */
+document.querySelectorAll('.left-arrow').forEach(b =>
+  b.addEventListener('click', () => goTo(index - 1))
+);
+document.querySelectorAll('.right-arrow').forEach(b =>
+  b.addEventListener('click', () => goTo(index + 1))
+);
