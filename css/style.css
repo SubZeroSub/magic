@@ -280,20 +280,18 @@ p { font-size:1.4rem; max-width:900px; line-height:1.8; margin:30px 0; }
     right: 20px;
   }
 }
-/* Убираем просвет следующей картинки на iPhone Safari (все ориентации) */
-@supports (-webkit-touch-callout: none) { /* Только iOS Safari */
+
+/* Финальный фикс просвета на iPhone (Safari и Chrome) */
+@supports (-webkit-touch-callout: none) {
   #carousel {
-    width: 300vw;
-  }
-  
-  .section {
-    width: 100vw;
+    width: calc(300vw + 4px);
   }
 }
 
-/* Дополнительно для альбомной на всех мобильных */
 @media (orientation: landscape) {
-  #carousel {
-    width: 300vw;
+  @supports (-webkit-touch-callout: none) {
+    #carousel {
+      width: calc(300vw + 8px);
+    }
   }
 }
