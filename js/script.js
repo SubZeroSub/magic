@@ -15,7 +15,7 @@ function goTo(index) {
   currentIndex = (index + total) % total;
 
   // Убираем предыдущие классы эффектов
-  carousel.classList.remove('transition-glitch', 'transition-distortion', 'transition-scanlines');
+  carousel.classList.remove('transition-glitch');
 
   // Рандомный эффект
   const effects = ['transition-glitch'];
