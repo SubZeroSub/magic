@@ -32,14 +32,15 @@ function goTo(i) {
 /* ===== OBSERVER ===== */
 function enableObserver() {
   observer = Observer.create({
-    target: window,
-    type: window.innerWidth < 768 ? "touch" : "wheel,touch",
+    target: carousel,           // ⬅️ ВАЖНО
+    type: window.innerWidth < 768 ? "touch" : "wheel",
     preventDefault: true,
     tolerance: 10,
     onDown: () => goTo(index + 1),
     onUp: () => goTo(index - 1)
   });
 }
+
 enableObserver();
 
 /* ===== ENTER PAGE ===== */
@@ -107,3 +108,41 @@ document.querySelectorAll('.left-arrow').forEach(b =>
 document.querySelectorAll('.right-arrow').forEach(b =>
   b.addEventListener('click', () => goTo(index + 1))
 );
+/* ===== LIGHTBOX ===== */
+const lightbox = document.getElementById('lightbox');
+const lightboxInner = document.getElementById('lightbox-inner');
+const lightboxClose = document.getElementById('lightbox-close');
+
+document.querySelectorAll('.gallery-item').forEach(item => {
+  item.addEventListener('click', () => {
+    const iframe = item.querySelector('iframe');
+    const img = item.querySelector('img');
+
+    lightboxInner.innerHTML = '';
+
+    if (iframe) {
+      const clone = iframe.cloneNode(true);
+      clone.src += '?autoplay=1';
+      lightboxInner.appendChild(clone);
+    }
+
+    if (img) {
+      const clone = img.cloneNode(true);
+      lightboxInner.appendChild(clone);
+    }
+
+    lightbox.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  });
+});
+
+lightboxClose.addEventListener('click', closeLightbox);
+lightbox.addEventListener('click', e => {
+  if (e.target === lightbox) closeLightbox();
+});
+
+function closeLightbox() {
+  lightbox.style.display = 'none';
+  lightboxInner.innerHTML = '';
+  document.body.style.overflow = '';
+}
