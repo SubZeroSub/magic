@@ -280,3 +280,20 @@ p { font-size:1.4rem; max-width:900px; line-height:1.8; margin:30px 0; }
     right: 20px;
   }
 }
+/* Фикс для iPhone в альбомной ориентации — убираем "просвет" следующей картинки */
+@supports (-webkit-touch-callout: none) { /* Только Safari/iOS */
+  #carousel {
+    width: calc(300 * 100vw);
+  }
+  
+  .section {
+    width: 100vw;
+  }
+}
+
+/* Универсальный фикс для всех мобильных в landscape */
+@media (orientation: landscape) and (max-width: 1024px) {
+  #carousel {
+    width: calc(300 * 100vw);
+  }
+}
