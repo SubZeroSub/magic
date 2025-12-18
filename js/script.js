@@ -1,42 +1,32 @@
 gsap.registerPlugin(Observer);
 
 const carousel = document.getElementById('carousel');
-const dots = document.querySelectorAll('.dot');
 let currentIndex = 0;
 const total = 3;
 
-// Массив эффектов (только на десктопе)
-const effects = ['transition-glitch', 'transition-distortion', 'transition-scanlines'];
-
-function updateDots() {
-  dots.forEach((dot, i) => {
-    dot.classList.toggle('active', i === currentIndex);
-  });
-}
+// Только глитч везде (на мобилке и десктопе)
+const effects = ['transition-glitch'];
 
 function goTo(index) {
   currentIndex = (index + total) % total;
 
-  const isMobile = window.innerWidth <= 768;
-  const duration = isMobile ? 0.8 : 1.2;
+  const duration = 1.2;
 
   // Убираем старые эффекты
   effects.forEach(effect => carousel.classList.remove(effect));
 
+  // Добавляем глитч
+  const randomEffect = effects[Math.floor(Math.random() * effects.length)];
+  carousel.classList.add(randomEffect);
+
   gsap.to(carousel, {
-    x: -currentIndex * 100 + 'vw',  // vw для идеального масштабирования
+    x: -currentIndex * 100 + 'vw',
     duration: duration,
     ease: "power3.inOut",
     onComplete: () => {
-      if (!isMobile && effects.length > 0) {
-        const randomEffect = effects[Math.floor(Math.random() * effects.length)];
-        carousel.classList.add(randomEffect);
-        setTimeout(() => carousel.classList.remove(randomEffect), duration * 1000);
-      }
+      carousel.classList.remove(randomEffect);
     }
   });
-
-  updateDots();
 }
 
 // Навигация стрелками
@@ -74,7 +64,7 @@ document.querySelectorAll('.enter-btn').forEach(btn => {
   });
 });
 
-// Закрытие — фикс чёрного экрана и миниатюр
+// Закрытие — стабильный возврат без чёрного и миниатюр
 document.querySelectorAll('.close-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     const page = btn.parentElement;
@@ -84,7 +74,7 @@ document.querySelectorAll('.close-btn').forEach(btn => {
     carousel.style.display = 'flex';
     carousel.style.opacity = '0';
 
-    // Принудительно устанавливаем текущую позицию перед анимацией
+    // Принудительная установка позиции
     gsap.set(carousel, { x: -currentIndex * 100 + 'vw' });
 
     gsap.to(carousel, {
@@ -94,9 +84,6 @@ document.querySelectorAll('.close-btn').forEach(btn => {
     });
   });
 });
-
-// Инициализация
-updateDots();
 
 // Частицы — только на десктопе
 if (window.innerWidth > 768) {
