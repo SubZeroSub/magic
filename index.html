@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Иллюзионист</title>
+
+  <!-- Подключаем наш CSS -->
+  <link rel="stylesheet" href="css/style.css">
+
+  <!-- GSAP и Observer -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/Observer.min.js"></script>
+
+  <!-- Particles.js для магических частиц -->
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+</head>
+<body>
+
+  <div id="carousel">
+    <section class="section">
+      <div class="enter-btn" data-target="page1">В мир иллюзий ↓</div>
+      <div class="nav-arrow left-arrow">←</div>
+      <div class="nav-arrow right-arrow">→</div>
+    </section>
+    <section class="section">
+      <div class="enter-btn" data-target="page2">Мои шоу ↓</div>
+      <div class="nav-arrow left-arrow">←</div>
+      <div class="nav-arrow right-arrow">→</div>
+    </section>
+    <section class="section">
+      <div class="enter-btn" data-target="page3">О фокуснике ↓</div>
+      <div class="nav-arrow left-arrow">←</div>
+      <div class="nav-arrow right-arrow">→</div>
+    </section>
+  </div>
+  <div class="dots">
+      <div class="dot active"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+    </div>
+  <!-- Страница 1 -->
+  <div class="vertical-page" id="page1">
+    <div class="close-btn">×</div>
+    <h1>Добро пожаловать в мир иллюзий</h1>
+    <p>Магия — искусство обманывать реальность. За годы я создал сотни уникальных номеров.</p>
+    <p>Исчезновения, левитация, манипуляции с картами — всё это ждёт вас.</p>
+    <p>Магия — искусство обманывать реальность. За годы я создал сотни уникальных номеров.</p>
+    <p>Исчезновения, левитация, манипуляции с картами — всё это ждёт вас.</p>
+    <p>Магия — искусство обманывать реальность. За годы я создал сотни уникальных номеров.</p>
+    <p>Исчезновения, левитация, манипуляции с картами — всё это ждёт вас.</p>
+    <p>Магия — искусство обманывать реальность. За годы я создал сотни уникальных номеров.</p>
+    <p>Исчезновения, левитация, манипуляции с картами — всё это ждёт вас.</p>
+    <p>Магия — искусство обманывать реальность. За годы я создал сотни уникальных номеров.</p>
+    <p>Исчезновения, левитация, манипуляции с картами — всё это ждёт вас.</p>
+    <p>Магия — искусство обманывать реальность. За годы я создал сотни уникальных номеров.</p>
+    <p>Исчезновения, левитация, манипуляции с картами — всё это ждёт вас.</p>
+    <p>Магия — искусство обманывать реальность. За годы я создал сотни уникальных номеров.</p>
+    <p>Исчезновения, левитация, манипуляции с картами — всё это ждёт вас.</p>
+    <p>Магия — искусство обманывать реальность. За годы я создал сотни уникальных номеров.</p>
+    <p>Исчезновения, левитация, манипуляции с картами — всё это ждёт вас.</p>
+    <p>Магия — искусство обманывать реальность. За годы я создал сотни уникальных номеров.</p>
+    <p>Исчезновения, левитация, манипуляции с картами — всё это ждёт вас.</p>
+    <p>Магия — искусство обманывать реальность. За годы я создал сотни уникальных номеров.</p>
+    <p>Исчезновения, левитация, манипуляции с картами — всё это ждёт вас.</p>
+    <p>Магия — искусство обманывать реальность. За годы я создал сотни уникальных номеров.</p>
+    <p>Исчезновения, левитация, манипуляции с картами — всё это ждёт вас.</p>
+    <p>Магия — искусство обманывать реальность. За годы я создал сотни уникальных номеров.</p>
+    <p>Исчезновения, левитация, манипуляции с картами — всё это ждёт вас.</p>
+      <p>Магия — искусство обманывать реальность. За годы я создал сотни уникальных номеров.</p>
+    <p>Исчезновения, левитация, манипуляции с картами — всё это ждёт вас.</p>
+    <p>Магия — искусство обманывать реальность. За годы я создал сотни уникальных номеров.</p>
+    <p>Исчезновения, левитация, манипуляции с картами — всё это ждёт вас.</p>  
+  </div>
+
+  <!-- Страница 2 — Шоу -->
+  <div class="vertical-page" id="page2">
+    <div class="close-btn">×</div>
+    <h1>Мои шоу и выступления</h1>
+    <p>Более 500 выступлений на корпоративы, свадьбы, театры и ТВ.</p>
+
+    <div class="gallery">
+      <div class="gallery-item"><div class="placeholder">Фото трюка 1</div></div>
+      <div class="gallery-item"><div class="placeholder">Фото трюка 2</div></div>
+      <div class="gallery-item"><div class="placeholder">Фото трюка 3</div></div>
+      <div class="gallery-item">
+        <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Видео выступления 1" allowfullscreen></iframe>
+      </div>
+      <div class="gallery-item">
+        <iframe src="https://www.youtube.com/embed/9bZkp7q19f0" title="Видео выступления 2" allowfullscreen></iframe>
+      </div>
+      <div class="gallery-item">
+        <iframe src="https://www.youtube.com/embed/kXYiU_JCYtU" title="Видео выступления 3" allowfullscreen></iframe>
+      </div>
+    </div>
+  </div>
+
+  <!-- Страница 3 — О фокуснике -->
+  <div class="vertical-page" id="page3">
+    <div class="close-btn">×</div>
+    <h1>О фокуснике</h1>
+    <p>Меня зовут [Твоё имя]. Страсть к фокусам с 12 лет.</p>
+    <p>Мой стиль — элегантность, психология и неожиданные повороты.</p>
+
+    <div class="gallery">
+      <div class="gallery-item"><div class="placeholder">Портрет 1</div></div>
+      <div class="gallery-item"><div class="placeholder">Портрет 2</div></div>
+      <div class="gallery-item"><div class="placeholder">Портрет 3</div></div>
+    </div>
+  </div>
+
+  <!-- Лайтбокс -->
+  <div id="lightbox">
+    <div id="lightbox-content">
+      <span id="lightbox-close">×</span>
+      <div id="lightbox-inner"></div>
+    </div>
+  </div>
+
+  <!-- Подключаем наш JS -->
+  <script src="js/script.js"></script>
+</body>
+</html>
