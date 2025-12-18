@@ -18,17 +18,16 @@ function goTo(index) {
   currentIndex = (index + total) % total;
 
   const isMobile = window.innerWidth <= 768;
-  const duration = isMobile ? 0.6 : 1.2;
+  const duration = isMobile ? 0.8 : 1.2; // чуть медленнее на мобилке, чтобы не "улетало в чёрное"
 
-  // Убираем предыдущие эффекты
+  // Убираем старые эффекты
   effects.forEach(effect => carousel.classList.remove(effect));
 
   gsap.to(carousel, {
-    x: -currentIndex * window.innerWidth,
+    x: -currentIndex * 100 + 'vw', // используем vw вместо px — лучше масштабируется на мобилке
     duration: duration,
-    ease: "power2.inOut",
+    ease: "power3.inOut", // более плавный ease
     onComplete: () => {
-      // Эффекты только на десктопе
       if (!isMobile && effects.length > 0) {
         const randomEffect = effects[Math.floor(Math.random() * effects.length)];
         carousel.classList.add(randomEffect);
