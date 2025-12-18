@@ -280,20 +280,20 @@ p { font-size:1.4rem; max-width:900px; line-height:1.8; margin:30px 0; }
     right: 20px;
   }
 }
-/* Фикс для iPhone в альбомной ориентации — убираем "просвет" следующей картинки */
-@supports (-webkit-touch-callout: none) { /* Только Safari/iOS */
+/* Финальный фикс для iPhone Safari (все ориентации) — убирает просвет следующей картинки */
+@supports (-webkit-touch-callout: none) {
   #carousel {
-    width: calc(300 * 100vw);
+    width: calc(3 * 100vw);
   }
-  
+
   .section {
     width: 100vw;
   }
 }
 
-/* Универсальный фикс для всех мобильных в landscape */
-@media (orientation: landscape) and (max-width: 1024px) {
+/* Дополнительный фикс для альбомной ориентации на всех мобильных */
+@media (orientation: landscape) {
   #carousel {
-    width: calc(300 * 100vw);
+    width: calc(3 * 100vw);
   }
 }
