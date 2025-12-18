@@ -45,9 +45,20 @@ body {
 }
 
 /* Фоны для вертикальных страниц */
-#page1 { background: url('../bg/1_1.jpg') center/cover no-repeat fixed; }
-#page2 { background: url('../bg/2_1.png') center/cover no-repeat fixed; }
-#page3 { background: url('../bg/3_1.png') center/cover no-repeat fixed; }
+/* Страница 1 — Главная: глубокий чёрно-красный градиент с загадкой */
+#page1 {
+  background: linear-gradient(135deg, #000000 0%, #1a0000 50%, #330000 100%);
+}
+
+/* Страница 2 — Шоу: энергичный красно-фиолетовый с магией */
+#page2 {
+  background: linear-gradient(135deg, #000000 0%, #2d001a 40%, #4b0082 100%);
+}
+
+/* Страница 3 — О фокуснике: элегантный тёмно-синий с глубиной */
+#page3 {
+  background: linear-gradient(135deg, #000000 0%, #001133 50%, #002b55 100%);
+}
 
 .enter-btn {
   font-size:3.5rem; 

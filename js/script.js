@@ -18,7 +18,7 @@ function goTo(index) {
   carousel.classList.remove('transition-glitch', 'transition-distortion', 'transition-scanlines');
 
   // Рандомный эффект
-  const effects = ['transition-glitch', 'transition-distortion', 'transition-scanlines'];
+  const effects = ['transition-glitch'];
   const randomEffect = effects[Math.floor(Math.random() * effects.length)];
   carousel.classList.add(randomEffect);
 
