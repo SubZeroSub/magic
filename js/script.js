@@ -10,23 +10,27 @@ const effects = ['transition-glitch'];
 function goTo(index) {
   currentIndex = (index + total) % total;
 
-  const duration = 1.2;
+  const isMobile = window.innerWidth <= 768;
+  const duration = isMobile ? 0.8 : 1.2;
 
   // Убираем старые эффекты
   effects.forEach(effect => carousel.classList.remove(effect));
 
-  // Добавляем глитч
-  const randomEffect = effects[Math.floor(Math.random() * effects.length)];
-  carousel.classList.add(randomEffect);
-
+  // Используем px от реальной ширины экрана — фикс для iPhone
   gsap.to(carousel, {
-    x: -currentIndex * 100 + 'vw',
+    x: -currentIndex * window.innerWidth,
     duration: duration,
     ease: "power3.inOut",
     onComplete: () => {
-      carousel.classList.remove(randomEffect);
+      if (!isMobile && effects.length > 0) {
+        const randomEffect = effects[Math.floor(Math.random() * effects.length)];
+        carousel.classList.add(randomEffect);
+        setTimeout(() => carousel.classList.remove(randomEffect), duration * 1000);
+      }
     }
   });
+
+  updateDots();
 }
 
 // Навигация стрелками
