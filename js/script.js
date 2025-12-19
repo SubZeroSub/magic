@@ -36,7 +36,7 @@ function enableObserver() {
     type: window.innerWidth < 768 ? "touch" : "wheel",
     preventDefault: true,
     tolerance: 300,
-    dragResistance: 1.5,
+    dragResistance: 1,
     onDown: () => goTo(index + 1),
     onUp: () => goTo(index - 1)
   });
