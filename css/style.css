@@ -239,3 +239,13 @@ p {
   color: #ff0000;
   cursor: pointer;
 }
+.vertical-page {
+  background-attachment: fixed; /* Фиксирует градиент по экрану */
+}
+#carousel {
+  overflow: hidden; /* Обрезает любой просвет */
+}
+
+.section {
+  min-width: 100vw; /* Принудительно полный экран */
+}
