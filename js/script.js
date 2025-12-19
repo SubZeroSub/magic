@@ -35,8 +35,8 @@ function enableObserver() {
     target: carousel,           // ⬅️ ВАЖНО
     type: window.innerWidth < 768 ? "touch" : "wheel",
     preventDefault: true,
-    tolerance: 300,
-    dragResistance: 1,
+    tolerance: 200,
+    dragResistance: 0.7,
     onDown: () => goTo(index + 1),
     onUp: () => goTo(index - 1)
   });
